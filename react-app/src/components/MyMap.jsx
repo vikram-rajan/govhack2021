@@ -5,56 +5,45 @@ import "leaflet/dist/leaflet.css";
 import "./MyMap.css";
 
 class MyMap extends Component {
-  state = { color: "#ffff00" };
-
-  colors = ["green", "blue", "yellow", "orange", "grey"];
-
   componentDidMount() {
-    console.log(mapData);
+
   }
 
   colourPicker(feature) {
     if (feature.properties.STE_NAME21 === "New South Wales") {
-      return 'purple';
-    }
-    else if (feature.properties.STE_NAME21 === "Queensland") {
-      return 'blue';
-    }
-    else if (feature.properties.STE_NAME21 === "Australian Capital Territory") {
-      return 'pink';
+      return 'red';
     }
     else {
-      return 'red';
+      return 'blue';
     }
   }
 
-  countryStyle = (feature) => ({
+  suburbStyle = (feature) => ({
     fillColor: this.colourPicker(feature),
-    fillOpacity: 0.5,
+    fillOpacity: 0.6,
     color: "black",
-    weight: 2,
+    weight: 1,
   });
 
   printMesssageToConsole = (event) => {
     console.log("Clicked");
   };
 
-  changeSuburbColor = (event) => {
-    event.target.setStyle({
-      color: "green",
-      fillColor: this.state.color,
-      fillOpacity: 1,
-    });
-  };
 
   onEachSuburb = (feature, layer) => {
+    const country = feature.properties.AUS_NAME21;
+    const state = feature.properties.STE_NAME21;
+    const lga = feature.properties.SA3_NAME21;
     const suburb = feature.properties.SA2_NAME21;
 
-    layer.bindPopup(suburb);
-    layer.on({
-      click: this.changeSuburbColor,
-    });
+    const popupText = `
+    <div>Country: ${country}</div>
+    <div>State: ${state}</div>
+    <div>LGA: ${lga}</div>
+    <div>Suburb: ${suburb}</div>
+    `
 
+    layer.bindPopup(popupText);
   }
 
   colorChange = (event) => {
@@ -65,18 +54,13 @@ class MyMap extends Component {
     return (
       <div>
         <h1 style={{ textAlign: "center" }}>NSW</h1>
-        <Map style={{ height: "80vh" }} zoom={6} center={[-35.2809, 149.13]}>
+        <Map style={{ height: "80vh" }} zoom={5} center={[-35.2809, 149.13]}>
           <GeoJSON
-            style={this.countryStyle}
+            style={this.suburbStyle}
             data={mapData.features}
             onEachFeature={this.onEachSuburb}
           />
         </Map>
-        <input
-          type="color"
-          value={this.state.color}
-          onChange={this.colorChange}
-        />
       </div>
     );
   }
