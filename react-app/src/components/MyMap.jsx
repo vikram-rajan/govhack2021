@@ -13,12 +13,27 @@ class MyMap extends Component {
     console.log(mapData);
   }
 
-  countryStyle = {
-    fillColor: "red",
-    fillOpacity: 1,
+  colourPicker(feature) {
+    if (feature.properties.STE_NAME21 === "New South Wales") {
+      return 'purple';
+    }
+    else if (feature.properties.STE_NAME21 === "Queensland") {
+      return 'blue';
+    }
+    else if (feature.properties.STE_NAME21 === "Australian Capital Territory") {
+      return 'pink';
+    }
+    else {
+      return 'red';
+    }
+  }
+
+  countryStyle = (feature) => ({
+    fillColor: this.colourPicker(feature),
+    fillOpacity: 0.5,
     color: "black",
     weight: 2,
-  };
+  });
 
   printMesssageToConsole = (event) => {
     console.log("Clicked");
@@ -34,8 +49,8 @@ class MyMap extends Component {
 
   onEachSuburb = (feature, layer) => {
     const suburb = feature.properties.SA2_NAME21;
-    layer.bindPopup(suburb);
 
+    layer.bindPopup(suburb);
     layer.on({
       click: this.changeSuburbColor,
     });
