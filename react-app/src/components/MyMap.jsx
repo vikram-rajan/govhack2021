@@ -24,7 +24,7 @@ class MyMap extends Component {
     console.log("Clicked");
   };
 
-  changeCountryColor = (event) => {
+  changeSuburbColor = (event) => {
     event.target.setStyle({
       color: "green",
       fillColor: this.state.color,
@@ -32,17 +32,15 @@ class MyMap extends Component {
     });
   };
 
-  onEachCountry = (country, layer) => {
-    const countryName = country.properties.st_ply_pid;
-    console.log(countryName);
-    layer.bindPopup(countryName);
-
-    layer.options.fillOpacity = Math.random();
+  onEachSuburb = (feature, layer) => {
+    const suburb = feature.properties.SA2_NAME21;
+    layer.bindPopup(suburb);
 
     layer.on({
-      click: this.changeCountryColor,
+      click: this.changeSuburbColor,
     });
-  };
+
+  }
 
   colorChange = (event) => {
     this.setState({ color: event.target.value });
@@ -56,6 +54,7 @@ class MyMap extends Component {
           <GeoJSON
             style={this.countryStyle}
             data={mapData.features}
+            onEachFeature={this.onEachSuburb}
           />
         </Map>
         <input
