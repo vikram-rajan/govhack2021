@@ -52,7 +52,7 @@ class MyMap extends Component {
     return (
       <div>
         <h1 style={{ textAlign: "center" }}>NSW</h1>
-        <Map style={{ height: "80vh" }} zoom={2} center={[33.8688, 151.2093]}>
+        <Map style={{ height: "80vh" }} zoom={6} center={[-35.2809, 149.13]}>
           <GeoJSON
             style={this.countryStyle}
             data={mapData.features}
