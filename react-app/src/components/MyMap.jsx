@@ -4,12 +4,11 @@ import mapData from "./../data/australia.json";
 import "leaflet/dist/leaflet.css";
 import "./MyMap.css";
 
-class MyMap extends Component {
-  componentDidMount() {
+import Slider from '@material-ui/core/Slider';
 
-  }
+export const MapTool = () => {
 
-  colourPicker(feature) {
+  const colourPicker = (feature) => {
     if (feature.properties.STE_NAME21 === "New South Wales") {
       return 'red';
     }
@@ -18,19 +17,14 @@ class MyMap extends Component {
     }
   }
 
-  suburbStyle = (feature) => ({
-    fillColor: this.colourPicker(feature),
+  const suburbStyle = (feature) => ({
+    fillColor: colourPicker(feature),
     fillOpacity: 0.6,
     color: "black",
     weight: 1,
   });
 
-  printMesssageToConsole = (event) => {
-    console.log("Clicked");
-  };
-
-
-  onEachSuburb = (feature, layer) => {
+  const onEachSuburb = (feature, layer) => {
     const country = feature.properties.AUS_NAME21;
     const state = feature.properties.STE_NAME21;
     const lga = feature.properties.SA3_NAME21;
@@ -46,24 +40,36 @@ class MyMap extends Component {
     layer.bindPopup(popupText);
   }
 
-  colorChange = (event) => {
-    this.setState({ color: event.target.value });
-  };
+  // const colorChange = (event) => {
+  //   this.setState({ color: event.target.value });
+  // };
 
-  render() {
-    return (
+  return (
+    <div style={{ width: "80%", margin: "0 auto" }}>
+      <h1 style={{ textAlign: "center" }}>Emerging Populations Over Time: NSW</h1>
+      <div style={{ width: "30%", margin: "0 auto", marginTop: "50px" }}>
+        <Slider
+          defaultValue={2016}
+          aria-labelledby="discrete-slider"
+          valueLabelDisplay="auto"
+          step={1}
+          marks
+          min={2016}
+          max={2021}
+        />
+      </div>
       <div>
-        <h1 style={{ textAlign: "center" }}>NSW</h1>
-        <Map style={{ height: "80vh" }} zoom={5} center={[-35.2809, 149.13]}>
+        <Map style={{ height: "80vh" }} zoom={5}
+          center={[-25.2744, 133.7751]}
+        // center={[-35.2809, 149.13]}
+        >
           <GeoJSON
-            style={this.suburbStyle}
+            style={suburbStyle}
             data={mapData.features}
-            onEachFeature={this.onEachSuburb}
+            onEachFeature={onEachSuburb}
           />
         </Map>
       </div>
-    );
-  }
+    </div >
+  );
 }
-
-export default MyMap;

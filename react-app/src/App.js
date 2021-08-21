@@ -1,8 +1,8 @@
 import React from "react";
-import MyMap from "./components/MyMap";
+import { MapTool } from "./components/MyMap";
 
 function App() {
-  return <MyMap />;
+  return <MapTool />;
 }
 
 export default App;
